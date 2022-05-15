@@ -1,0 +1,61 @@
+#!/bin/sh
+
+
+# the program reads a config file
+# in the users home directory, and builds a list of aliases.
+# each line has the format of "alias,command".
+# due to having problems setting '=' as a field separator,
+# instead ',' is used as a field separator
+
+. /usr/local/etc/shell.subr
+
+no_root
+
+take_no_args
+
+check_for_X_server
+
+
+set -x
+
+
+CONFIG_FILE='.fpalias'
+
+
+
+if [ ! -e "$HOME/$CONFIG_FILE" ]; then
+
+	echo "no $CONFIG_FILE file found" | dmenu 
+
+	exit 2
+
+elif grep SPACE "$HOME/$CONFIG_FILE"; then
+
+	echo 'bad configuration file format: no "SPACE" should be in there' | dmenu
+
+	exit 3
+
+fi
+
+
+# clear any previous aliases
+
+for command_alias in $(alias | cut -d'=' -f1 | cut -d' '  -f2); do unalias "$command_alias"; done
+
+
+IFS='
+' 
+
+
+for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do 
+
+	ALIAS="$(echo "$line" | cut -d',' -f1 | sed 's/ /SPACE/g')"
+
+	COMMAND="$(echo "$line" | cut -d',' -f2)"
+
+	alias "$ALIAS=$COMMAND"
+
+done
+
+
+eval "$(alias | cut -d'=' -f1 | cut -d' ' -f2 | sed 's/SPACE/ /g' | dmenu -i | sed 's/ /SPACE/g')"
