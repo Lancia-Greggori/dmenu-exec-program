@@ -1,27 +1,14 @@
 #!/bin/sh
 
-
-# the program reads a config file
-# in the users home directory, and builds a list of aliases.
-# each line has the format of "alias,command".
+# The program reads a config file in the users home directory, and builds a list of aliases.
+# Each line has the format of "alias,command".
 # due to having problems setting '=' as a field separator,
 # instead ',' is used as a field separator
 
-. /usr/local/etc/shell.subr
 
-no_root
-
-take_no_args
-
-check_for_X_server
-
-
-set -x
-
+[ -z "${DISPLAY+x}" ] && echo "X server not found" && exit 1
 
 CONFIG_FILE='.fpalias'
-
-
 
 if [ ! -e "$HOME/$CONFIG_FILE" ]; then
 
@@ -42,10 +29,8 @@ fi
 
 for command_alias in $(alias | cut -d'=' -f1 | cut -d' '  -f2); do unalias "$command_alias"; done
 
-
 IFS='
 ' 
-
 
 for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do 
 
@@ -56,6 +41,5 @@ for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do
 	alias "$ALIAS=$COMMAND"
 
 done
-
 
 eval "$(alias | cut -d'=' -f1 | cut -d' ' -f2 | sed 's/SPACE/ /g' | dmenu -i | sed 's/ /SPACE/g')"
