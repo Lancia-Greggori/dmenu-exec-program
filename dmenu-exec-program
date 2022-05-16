@@ -24,11 +24,15 @@ fi
 
 # Clear any previous aliases
 
-for command_alias in $(alias | cut -d'=' -f1 | cut -d' '  -f2); do unalias "$command_alias"; done
+for command_alias in $(alias | cut -d'=' -f1 | cut -d' '  -f2); do 
+	
+	unalias "$command_alias"
+
+done
+
 
 IFS='
 ' 
-
 for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do 
 
 	ALIAS="$(echo "$line" | cut -d',' -f1 | sed 's/ /SPACE/g')"
