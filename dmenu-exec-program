@@ -22,7 +22,7 @@ elif grep SPACE "$HOME/$CONFIG_FILE"; then
 fi
 
 
-# clear any previous aliases
+# Clear any previous aliases
 
 for command_alias in $(alias | cut -d'=' -f1 | cut -d' '  -f2); do unalias "$command_alias"; done
 
