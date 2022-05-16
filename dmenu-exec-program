@@ -4,8 +4,31 @@ set -eu
 
 [ -z "${DISPLAY+x}" ] && echo 'X server not found' && exit 1
 
-CONFIG_FILE='.fpalias'
+print_help(){
+	
+	cat <<EOF
+Usage: $(basename "$0") [Options]
 
+Available options:
+
+	-i		dmenu match case insensitive
+	-h,--help	print this help menu
+	
+EOF
+}
+
+CASE_CONDITION=''
+[ -z "$*" ] || case "$*" in
+
+	-i) CASE_CONDITION='-i' ;;
+
+	-h|--help) print_help && exit 0 ;;
+
+	*) print_help && exit 2 ;;
+
+esac
+
+CONFIG_FILE='.fpalias'
 if [ ! -e "$HOME/$CONFIG_FILE" ]; then
 
 	echo "no $CONFIG_FILE file found" | dmenu 
@@ -39,4 +62,4 @@ for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do
 
 done
 
-eval "$(alias | cut -d'=' -f1 | cut -d' ' -f2 | sed 's/SPACE/ /g' | dmenu -i | sed 's/ /SPACE/g')"
+eval "$(alias | cut -d'=' -f1 | cut -d' ' -f2 | sed 's/SPACE/ /g' | dmenu $CASE_CONDITION | sed 's/ /SPACE/g')"
