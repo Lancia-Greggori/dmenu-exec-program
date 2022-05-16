@@ -33,6 +33,11 @@ done
 
 IFS='
 ' 
+
+# I wanted to use a while read loop, but the problem is that aliases defined in the
+# while read loop are only local to that loop and are not brought over into the script
+# after the loop ends
+
 for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do 
 
 	ALIAS="$(echo "$line" | cut -d',' -f1 | sed 's/ /SPACE/g')"
