@@ -16,9 +16,9 @@ The only window manager I have tested it with is i3, but you're free to try it w
 You can give me feedback on what I should add or improve, have fun :>
 
 # Sample ".fpalias" configuration file
-
-`IRC client,hexchat`
-`chromium with proxy,chromium --proxy-server="..."`
-`audio,pavucontrol`
-`telegram,telegram-desktop`
-
+```
+IRC client,hexchat
+chromium with proxy,chromium --proxy-server="..."
+audio,pavucontrol
+telegram,telegram-desktop
+```
