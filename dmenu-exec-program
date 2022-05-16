@@ -1,12 +1,9 @@
 #!/bin/sh
 
-# The program reads a config file in the users home directory, and builds a list of aliases.
-# Each line has the format of "alias,command".
-# due to having problems setting '=' as a field separator,
-# instead ',' is used as a field separator
+set -eu
 
+[ -z "${DISPLAY+x}" ] && echo 'X server not found' && exit 1
 
-[ -z "${DISPLAY+x}" ] && echo "X server not found" && exit 1
 
 CONFIG_FILE='.fpalias'
 
@@ -18,7 +15,7 @@ if [ ! -e "$HOME/$CONFIG_FILE" ]; then
 
 elif grep SPACE "$HOME/$CONFIG_FILE"; then
 
-	echo 'bad configuration file format: no "SPACE" should be in there' | dmenu
+	echo 'bad configuration file format: no "SPACE" allowed' | dmenu
 
 	exit 3
 
