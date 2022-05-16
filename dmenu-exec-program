@@ -4,7 +4,6 @@ set -eu
 
 [ -z "${DISPLAY+x}" ] && echo 'X server not found' && exit 1
 
-
 CONFIG_FILE='.fpalias'
 
 if [ ! -e "$HOME/$CONFIG_FILE" ]; then
@@ -21,15 +20,12 @@ elif grep SPACE "$HOME/$CONFIG_FILE"; then
 
 fi
 
-
 # Clear any previous aliases
-
 for command_alias in $(alias | cut -d'=' -f1 | cut -d' '  -f2); do 
 	
 	unalias "$command_alias"
 
 done
-
 
 IFS='
 ' 
@@ -37,7 +33,6 @@ IFS='
 # I wanted to use a while read loop, but the problem is that aliases defined in the
 # while read loop are only local to that loop and are not brought over into the script
 # after the loop ends
-
 for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do 
 
 	ALIAS="$(echo "$line" | cut -d',' -f1 | sed 's/ /SPACE/g')"
