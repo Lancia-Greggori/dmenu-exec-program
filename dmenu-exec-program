@@ -9,13 +9,11 @@ CONFIG_FILE='.fpalias'
 if [ ! -e "$HOME/$CONFIG_FILE" ]; then
 
 	echo "no $CONFIG_FILE file found" | dmenu 
-
 	exit 2
 
 elif grep SPACE "$HOME/$CONFIG_FILE"; then
 
 	echo 'bad configuration file format: no "SPACE" allowed' | dmenu
-
 	exit 3
 
 fi
@@ -36,9 +34,7 @@ IFS='
 for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do 
 
 	ALIAS="$(echo "$line" | cut -d',' -f1 | sed 's/ /SPACE/g')"
-
 	COMMAND="$(echo "$line" | cut -d',' -f2)"
-
 	alias "$ALIAS=$COMMAND"
 
 done
