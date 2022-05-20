@@ -4,10 +4,12 @@ set -eu
 
 [ -z "${DISPLAY+x}" ] && echo 'X server not found' && exit 1
 
+PROGRAM_NAME="$(basename "$0")"
+
 print_help(){
 	
 	cat <<EOF
-Usage: $(basename "$0") [Options]
+Usage: $PROGRAM_NAME [Options]
 
 Available options:
 
@@ -18,6 +20,7 @@ EOF
 }
 
 CASE_CONDITION=''
+
 [ -z "$*" ] || case "$*" in
 
 	-i) CASE_CONDITION='-i' ;;
@@ -29,6 +32,7 @@ CASE_CONDITION=''
 esac
 
 CONFIG_FILE='.fpalias'
+
 if [ ! -e "$HOME/$CONFIG_FILE" ]; then
 
 	echo "no $CONFIG_FILE file found" | dmenu 
@@ -48,18 +52,19 @@ for command_alias in $(alias | cut -d'=' -f1 | cut -d' '  -f2); do
 
 done
 
-IFS='
-' 
+TMP_FILE="$PROGRAM_NAME.$PPID"
 
-# I wanted to use a while read loop, but the problem is that aliases defined in the
-# while read loop are only local to that loop and are not brought over into the script
-# after the loop ends
-for line in $(grep -v '^[# $]' "$HOME/$CONFIG_FILE"); do 
+#ignore any lines that begin with a comment, space or just empty lines
+grep -v '^[# $]' "$HOME/$CONFIG_FILE" > "$TMP_FILE"
+
+while read -r line; do
 
 	ALIAS="$(echo "$line" | cut -d',' -f1 | sed 's/ /SPACE/g')"
 	COMMAND="$(echo "$line" | cut -d',' -f2)"
 	alias "$ALIAS=$COMMAND"
 
-done
+done < "$TMP_FILE"
+
+rm "$TMP_FILE"
 
 eval "$(alias | cut -d'=' -f1 | cut -d' ' -f2 | sed 's/SPACE/ /g' | dmenu $CASE_CONDITION | sed 's/ /SPACE/g')"
