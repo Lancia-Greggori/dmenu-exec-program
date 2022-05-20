@@ -21,4 +21,6 @@ IRC client,hexchat
 chromium with proxy,chromium --proxy-server="..."
 audio,pavucontrol
 telegram,telegram-desktop
+office,libreoffice
+torrent client,transmission-gtk
 ```
