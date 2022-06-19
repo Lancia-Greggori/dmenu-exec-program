@@ -17,6 +17,7 @@ You can give me feedback on what I should add or improve, have fun :>
 
 # For dwm users: Why use this program over the default dmenu behaviour that dwm provides?
 The problem with the default dmenu behaviour used in dwm is that it provides the user with all the available commands in $PATH, most of which are meant to be executed only in the a terminal environment.
+
 With dmenu-exec-program, you can easily specifiy a list of programs to show that you know you are going to use.
 
 # Sample ".fpalias" configuration file
