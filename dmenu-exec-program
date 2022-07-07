@@ -27,7 +27,7 @@ CASE_CONDITION=''
 
 	-h|--help) print_help && exit 0 ;;
 
-	*) print_help && exit 2 ;;
+	*) print_help && exit 1 ;;
 
 esac
 
@@ -36,12 +36,12 @@ CONFIG_FILE='.fpalias'
 if [ ! -e "$HOME/$CONFIG_FILE" ]; then
 
 	echo "no $CONFIG_FILE file found" | dmenu 
-	exit 2
+	exit 1
 
 elif grep SPACE "$HOME/$CONFIG_FILE" 1>/dev/null; then
 
 	echo 'bad configuration file: no "SPACE" allowed' | dmenu
-	exit 3
+	exit 1
 
 fi
 
