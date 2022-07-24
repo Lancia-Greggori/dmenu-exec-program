@@ -38,7 +38,7 @@ if [ ! -e "$HOME/$CONFIG_FILE" ]; then
 	echo "no $CONFIG_FILE file found" | dmenu 
 	exit 1
 
-elif grep SPACE "$HOME/$CONFIG_FILE" 1>/dev/null; then
+elif fgrep SPACE "$HOME/$CONFIG_FILE" 1>/dev/null; then
 
 	echo 'bad configuration file: no "SPACE" allowed' | dmenu
 	exit 1
